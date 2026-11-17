@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LocoBuzz Solutions | Executive SaaS Intelligence & Cohort Analytics</title>
+  <!-- Chart.js for High Performance Visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    
+    <!-- Top Header -->
+    <header class="dashboard-header">
+      <div class="brand-section">
+        <div class="logo-badge">LB</div>
+        <div class="brand-info">
+          <h1>LocoBuzz Solutions &bull; Executive SaaS Intelligence Suite</h1>
+          <p>AI Product Manager Intern Portfolio &bull; B2B Customer Analytics & Cohort Optimization</p>
+        </div>
+      </div>
+
+      <div class="header-status">
+        <div class="status-indicator">
+          <div class="pulsing-dot"></div>
+          <span>17,250 B2B Accounts Live</span>
+        </div>
+        <button class="btn-tableau" onclick="exportTableauFeed()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2v20M2 12h20M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Tableau Feeds
+        </button>
+      </div>
+    </header>
+
+    <!-- Filters Bar -->
+    <section class="filter-bar">
+      <div class="filter-group">
+        <label for="filterTier">Plan Tier:</label>
+        <select id="filterTier">
+          <option value="all">All Tiers (17.2K accounts)</option>
+          <option value="Starter">Starter ($299/mo)</option>
+          <option value="Growth">Growth ($999/mo - Mid Market)</option>
+          <option value="Enterprise">Enterprise ($3,499+/mo)</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="filterExperiment">A/B Experiment Cohort:</label>
+        <select id="filterExperiment">
+          <option value="all">All Accounts (Blended)</option>
+          <option value="control">Control (Old Pricing + 20 bps Gap)</option>
+          <option value="variant">Variant (Optimized Pricing - 14% Churn Cut)</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="filterTime">Timeframe:</label>
+        <select id="filterTime">
+          <option value="2025-FY">FY2025 (12 Months Historical)</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Core SaaS KPI Scorecard Cards -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-title">Ending MRR (ARR Run-Rate)</div>
+        <div class="kpi-value" id="kpiEndingMrr">$15.63M</div>
+        <div class="kpi-sub">
+          <span class="kpi-badge badge-green">+14.2% YoY</span>
+          <span style="color:var(--text-dim)">ARR: $187.6M</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-title">Monthly Logo Churn Rate</div>
+        <div class="kpi-value" id="kpiChurnRate" style="color:var(--accent-emerald)">3.7%</div>
+        <div class="kpi-sub">
+          <span class="kpi-badge badge-green">-14% Cut via A/B</span>
+          <span style="color:var(--text-dim)">was 4.3% in Control</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-title">Net Revenue Retention (NRR)</div>
+        <div class="kpi-value">108.2%</div>
+        <div class="kpi-sub">
+          <span class="kpi-badge badge-cyan">Net Expansion</span>
+          <span style="color:var(--text-dim)">Target > 105%</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-title">LTV : CAC Ratio</div>
+        <div class="kpi-value">4.2x</div>
+        <div class="kpi-sub">
+          <span class="kpi-badge badge-green">Healthy Unit Econ</span>
+          <span style="color:var(--text-dim)">Avg CAC: $2,350</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-title">SaaS Quick Ratio</div>
+        <div class="kpi-value">2.54x</div>
+        <div class="kpi-sub">
+          <span class="kpi-badge badge-cyan">High Growth</span>
+          <span style="color:var(--text-dim)">Threshold > 2.0x</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visual Analytics Grid: MRR Growth & Pricing Gap Isolation -->
+    <div class="dashboard-grid-2">
+      <div class="panel-card">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">MRR Growth & Revenue Movements Waterfall</div>
+            <div class="panel-subtitle">New MRR, Expansion MRR, and Churned MRR trajectories (USD Millions)</div>
+          </div>
+        </div>
+        <div class="chart-box">
+          <canvas id="mrrChart"></canvas>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Pricing Gap Analysis & Overage Cliff</div>
+            <div class="panel-subtitle">Detecting the 20 bps ($0.0020 / 1K tokens) friction point in Mid-Market</div>
+          </div>
+        </div>
+        <div class="chart-box">
+          <canvas id="pricingChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- A/B Testing Validation & Impact Panel -->
+    <div class="panel-card">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">A/B Testing Statistical Validation: 14% Churn Reduction</div>
+          <div class="panel-subtitle">Hypothesis: Removing 20 bps overage margin penalty prevents bill shock in Mid-Market accounts</div>
+        </div>
+        <span class="kpi-badge badge-green" style="font-size: 13px; padding: 4px 10px;">p < 0.0001 (Significant)</span>
+      </div>
+
+      <div class="ab-test-card">
+        <div class="ab-box control">
+          <h4>Control Group (Original Pricing + 20 bps Penalty)</h4>
+          <div class="ab-stat-row"><span>Accounts Analyzed:</span><span>3,430 Accounts</span></div>
+          <div class="ab-stat-row"><span>Overage Token Price:</span><span>$0.0120 / 1,000 Tokens</span></div>
+          <div class="ab-stat-row"><span>Growth Tier Churn Rate:</span><span style="color:var(--accent-rose)">22.30%</span></div>
+          <div class="ab-stat-row"><span>Avg Customer Lifespan:</span><span>7.8 Months</span></div>
+          <div class="ab-stat-row"><span>Churn Spikes:</span><span>Month 3 to 5 (Bill Shock)</span></div>
+        </div>
+
+        <div class="ab-box variant">
+          <h4>Variant Group (Optimized Tier + Grandfathered Buffer)</h4>
+          <div class="ab-stat-row"><span>Accounts Analyzed:</span><span>3,465 Accounts</span></div>
+          <div class="ab-stat-row"><span>Overage Token Price:</span><span>$0.0100 / 1,000 Tokens (-20 bps)</span></div>
+          <div class="ab-stat-row"><span>Growth Tier Churn Rate:</span><span style="color:var(--accent-emerald)">17.29%</span></div>
+          <div class="ab-stat-row"><span>Avg Customer Lifespan:</span><span>9.6 Months (+23% LTV)</span></div>
+          <div class="ab-stat-row"><span>Churn Reduction:</span><span style="color:var(--accent-emerald)">-22.5% in Growth (-14.1% Overall)</span></div>
+        </div>
+      </div>
+
+      <div class="ab-banner">
+        <div>
+          <div class="ab-banner-title">Validated Business Impact Across 17K+ Client Accounts</div>
+          <div class="ab-banner-sub">Two-proportion Z = 5.23 &bull; Chi-Square &Chi;&sup2; = 27.01 &bull; 166 Preserved Mid-Market Accounts</div>
+        </div>
+        <div class="ab-banner-metric">+$1.98M Protected ARR</div>
+      </div>
+    </div>
+
+    <!-- Cohort Retention Heatmap Table -->
+    <div class="panel-card">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">AARRR Customer Cohort Retention Heatmap (12-Month Matrix)</div>
+          <div class="panel-subtitle">Month-over-month active accounts retention rate (%) from Month 0 to Month 11</div>
+        </div>
+      </div>
+
+      <div class="heatmap-container">
+        <table class="cohort-table">
+          <thead>
+            <tr>
+              <th style="text-align:left">Cohort (Size)</th>
+              <th>M0</th>
+              <th>M1</th>
+              <th>M2</th>
+              <th>M3</th>
+              <th>M4</th>
+              <th>M5</th>
+              <th>M6</th>
+              <th>M7</th>
+              <th>M8</th>
+              <th>M9</th>
+              <th>M10</th>
+              <th>M11</th>
+            </tr>
+          </thead>
+          <tbody id="cohortTableBody">
+            <!-- Populated dynamically by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

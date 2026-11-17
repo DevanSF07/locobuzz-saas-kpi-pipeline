@@ -1,0 +1,10 @@
+metric,value
+Control Sample Size,"3,450"
+Control Churn Rate,21.94%
+Variant Sample Size,"3,445"
+Variant Churn Rate,17.68%
+Relative Churn Reduction,19.43%
+Z-Score,4.4418
+p-value,8.9189e-06
+Accounts Preserved,148
+Protected Annual ARR,"$1,770,541.02"
